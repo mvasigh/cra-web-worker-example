@@ -1,5 +1,6 @@
-/* eslint-disable no-restricted-globals */
+import React, { useState, useEffect } from 'react';
 import faker from 'faker';
+import { debounce } from 'throttle-debounce';
 
 function generateEmployees(num) {
   return Array(num)
@@ -41,10 +42,35 @@ function findMatches(query, options = { limit: 30 }) {
   return matchedEmployees;
 }
 
-function handleMessage(e) {
-  const { query, options } = e.data;
-  const matches = findMatches(query, options);
-  self.postMessage(matches);
+function App() {
+  const [matches, setMatches] = useState([]);
+
+  const debouncedFindMatches = debounce(500, query => {
+    const matches = findMatches(query);
+    setMatches(matches);
+  });
+
+  const basicFindMatches = query => {
+    const matches = findMatches(query);
+    setMatches(matches);
+  };
+
+  const handleChange = e => {
+    const query = e.target.value;
+    if (!query) {
+      return setMatches([]);
+    }
+    basicFindMatches(query);
+  };
+
+  return (
+    <div className="App">
+      <input style={{ fontSize: '2em' }} type="text" onChange={handleChange} />
+      <pre style={{ width: '800px', display: 'block' }}>
+        {JSON.stringify(matches, null, 2)}
+      </pre>
+    </div>
+  );
 }
 
-self.addEventListener('message', handleMessage);
+export default App;
