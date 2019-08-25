@@ -3,11 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.19.0",
+    "escodegen": "^1.12.0",
+    "esprima": "^4.0.1",
     "faker": "^4.1.0",
+    "lave": "^1.1.10",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1",
-    "throttle-debounce": "^2.1.0"
+    "throttle-debounce": "^2.1.0",
+    "to-ast": "^1.0.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
