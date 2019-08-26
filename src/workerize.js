@@ -8,7 +8,6 @@ function workerScript(action) {
   const handleMessage = e => {
     console.log(`Received message: ${JSON.stringify(e.data)}`);
     const args = e.data.args;
-    console.log(args);
     const result = action.apply(this, args);
     self.postMessage({ result });
   };
@@ -20,15 +19,13 @@ function executeWorker(worker, args) {
   return new Promise((resolve, reject) => {
     worker.addEventListener('message', e => {
       const result = e.data.result;
-      worker.terminate();
       resolve(result);
     });
     worker.postMessage({ args: [...args] });
-    console.log(worker);
   });
 }
 
-export function wrap(action) {
+export function workerize(action) {
   const actionStr = escodegen.generate(toAST(action));
   const code = `(${escodegen.generate(toAST(workerScript))})(${actionStr})`;
 
