@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import faker from 'faker';
-import { debounce } from 'throttle-debounce';
 
 function generateEmployees(num) {
   return Array(num)
@@ -44,11 +43,6 @@ function findMatches(query, options = { limit: 30 }) {
 
 function App() {
   const [matches, setMatches] = useState([]);
-
-  const debouncedFindMatches = debounce(500, query => {
-    const matches = findMatches(query);
-    setMatches(matches);
-  });
 
   const basicFindMatches = query => {
     const matches = findMatches(query);
